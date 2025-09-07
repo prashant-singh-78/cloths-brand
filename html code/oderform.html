@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Form</title>
+  <link rel="stylesheet" href="/csscode/form.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Place Your Order</h2>
+    <form id="orderForm">
+      <label>Name</label>
+      <input name="name" placeholder="Name" required>
+
+      <label>Email</label>
+      <input name="email" type="email" placeholder="xyz@gmail.com" required>
+
+      <label>Contact number</label>
+      <input name="mobile" placeholder="Mobile Number" required>
+
+      <label>Product Type</label>
+      <input type="text" name="product" id="productInput" readonly>
+
+      <label>Size of your product</label>
+      <select name="size" required>
+        <option value="S">Small</option>
+        <option value="M">Medium</option>
+        <option value="L">Large</option>
+      </select>
+
+      <label>District</label>
+      <input name="district_name" placeholder="District_name" required>
+
+
+      <label>Enter your address</label>
+      <textarea name="address" placeholder="Address" required></textarea>
+
+      <button type="submit">Confirm Order</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productName = params.get("product");
+    document.getElementById("productInput").value = productName || "No product selected";
+  </script>
+
+  <script src="/html code/oder.js"></script>
+</body>
+</html>

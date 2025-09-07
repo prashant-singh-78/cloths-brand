@@ -1,0 +1,153 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+    }
+    .loading {
+      font-size: 24px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading">Processing Payment...</div>
+
+  <script>
+    const orderData = JSON.parse(localStorage.getItem("orderData"));
+    if (!orderData) {
+      alert("Order data missing!");
+      window.location.href = "index.html";
+    }
+
+    const finalAmount = parseInt(orderData.amount) + 70; // +70 delivery charge
+
+    const options = {
+      key: "rzp_test_03TdHUVtbZo6ix", // 🔁 Replace with live/test Razorpay key
+      amount: finalAmount * 100, // in paise
+      currency: "INR",
+      name: "sylo",
+      description: orderData.product,
+      prefill: {
+        name: orderData.name,
+        email: orderData.email,
+        contact: orderData.mobile
+      },
+      theme: {
+        color: "#3399cc"
+      },
+      handler: function (response) {
+        // ✅ On success: post to Google Sheet
+        fetch("https://script.google.com/macros/s/AKfycbxPd2FbHNZIvn3QrGWJthCnhqNt6zbjGy5X4uVEfhG5IBcxw78a2nn6Tj9W2gDORZUYSA/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ ...orderData, payment_id: response.razorpay_payment_id, final_amount: finalAmount })
+        });
+
+        // Redirect to thank you
+        window.location.href = "thankyou.html";
+      },
+      modal: {
+        ondismiss: function () {
+          alert("Payment cancelled.");
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  </script>
+</body>
+</html> -->
+<!-- ✅ payment.html - Fully working with Razorpay & Google Sheets -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+    }
+    .loading {
+      font-size: 24px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading">Processing Payment...</div>
+
+  <script>
+    const orderData = JSON.parse(localStorage.getItem("orderData"));
+    if (!orderData) {
+      alert("Order data missing!");
+      window.location.href = "index.html";
+    }
+
+    const finalAmount = parseInt(orderData.amount) + 70; // delivery charge
+
+    const options = {
+      key: "rzp_test_03TdHUVtbZo6ix", // Replace with LIVE key when going live
+      amount: finalAmount * 100,
+      currency: "INR",
+      name: "SYLO",
+      description: orderData.product,
+      prefill: {
+        name: orderData.name,
+        email: orderData.email,
+        contact: orderData.mobile
+      },
+      theme: {
+        color: "#3399cc"
+      },
+      handler: function (response) {
+        fetch("https://script.google.com/macros/s/AKfycbxDQxY3cVRqHVe9ALMiDUC6t5oMoOVBymY8fuRMrz1-bPsNrw0w2Ald3kvGLnRbPLSPTw/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    ...orderData,
+    payment_id: response.razorpay_payment_id,
+    final_amount: finalAmount
+  })
+})
+
+        .then(res => res.text())
+        .then(data => {
+          console.log("Sheet response:", data);
+          window.location.href = "/html code/thankyou.html"; // Redirect to thank you page
+          localStorage.removeItem("orderData"); // Clear order data after successful payment
+        })
+        .catch(err => {
+          console.error("Failed to save in sheet:", err);
+          alert("Payment success but order not saved. Contact support.");
+        });
+      },
+      modal: {
+        ondismiss: function () {
+          alert("Payment cancelled.");
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  </script>
+</body>
+</html>
+

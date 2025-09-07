@@ -1,0 +1,63 @@
+*{
+    margin: 0%;
+    padding: 0%;
+
+}
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+   
+    padding: 20px 80px;
+    background:rgb(93, 90, 90);
+    position: sticky;
+    top: 0%;
+    left: 0%;
+    height:80px;
+}
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+
+
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position:relative;
+  
+
+}
+#navbar li a{
+    text-decoration: none;
+    color: #222;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}  
+#hero{
+    display: flex;
+} 
+
+#hero .hero-content{
+    width: 100%;
+    height: 95vh;
+    background-image: url(/images/signturemodel.jpg);
+    background-size: full;
+    background-size: cover;
+    background-position: center;
+    padding-top:100vh ;
+    padding-bottom:80vh;
+    
+}
+#hero .hero-content .textabout{
+    width: 10%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+}
